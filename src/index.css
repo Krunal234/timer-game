@@ -189,6 +189,8 @@ header p {
 
   border-radius: 12px;
   color: var(--text-bright);
+  position: relative;
+  z-index: 1;
   transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
 }
 
@@ -262,6 +264,11 @@ header p {
   border-radius: 16px;
   padding: 2rem;
 
+  /* Ensure modal always sits above everything else */
+  position: fixed;
+  z-index: 1000;
+  isolation: isolate;
+
   background: rgba(12, 5, 30, 0.72);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
@@ -269,19 +276,48 @@ header p {
   color: var(--text-bright);
 
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.7),
-    0 1px 0 rgba(255, 255, 255, 0.10) inset,
-    0 0 60px rgba(123, 47, 255, 0.15);
+    0 32px 80px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 0 80px rgba(123, 47, 255, 0.25),
+    0 0 140px rgba(255, 0, 204, 0.12);
+
+  /* Pulsing border glow while open */
+  animation: modal-glow 2.5s ease-in-out infinite;
 }
 
 .result-modal[open] {
-  animation: slide-in-from-top 0.35s ease-out;
+  animation: modal-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1), modal-glow 2.5s ease-in-out 0.4s infinite;
+}
+
+@keyframes modal-glow {
+  0%, 100% {
+    box-shadow:
+      0 32px 80px rgba(0, 0, 0, 0.85),
+      0 1px 0 rgba(255, 255, 255, 0.12) inset,
+      0 0 60px rgba(123, 47, 255, 0.20),
+      0 0 100px rgba(255, 0, 204, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 32px 80px rgba(0, 0, 0, 0.85),
+      0 1px 0 rgba(255, 255, 255, 0.12) inset,
+      0 0 100px rgba(123, 47, 255, 0.38),
+      0 0 160px rgba(255, 0, 204, 0.20);
+  }
 }
 
 .result-modal::backdrop {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(123, 47, 255, 0.12) 0%, transparent 70%),
+    rgba(2, 0, 10, 0.92);
+  backdrop-filter: blur(8px) brightness(0.4) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) brightness(0.4) saturate(120%);
+  animation: backdrop-in 0.35s ease-out;
+}
+
+@keyframes backdrop-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .result-modal h2 {
@@ -356,4 +392,18 @@ header p {
   0%   { opacity: 0.4; }
   50%  { opacity: 1; }
   100% { opacity: 0.4; }
+}
+
+@keyframes modal-enter {
+  0% {
+    transform: translateY(-28px) scale(0.95);
+    opacity: 0;
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
