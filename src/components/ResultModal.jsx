@@ -13,7 +13,7 @@ const ResultModal = ({ref, result, targetTime, remainingTime, onReset}) => {
     const score = Math.round((1 - (remainingTime / (targetTime * 1000))) * 100);
 
     return (
-       <dialog ref={dialogRef} className="result-modal">
+       <dialog ref={dialogRef} className="result-modal" onClose={onReset}>
         {userLost ? <h2>You lost the game!</h2> : <h2>Your Score: {score}</h2>}
 
         <p>The target time was <strong>{targetTime}</strong> seconds.</p>
