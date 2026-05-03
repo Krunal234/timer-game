@@ -1,56 +1,113 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Handjet:wght@400;700&display=swap');
 
+/* ── CSS Variables ── */
+:root {
+  --neon-cyan:    #00eeff;
+  --neon-magenta: #ff00cc;
+  --neon-purple:  #7b2fff;
+  --neon-green:   #00ff88;
+  --glass-bg:     rgba(10, 6, 25, 0.55);
+  --glass-border: rgba(123, 47, 255, 0.35);
+  --glass-shine:  rgba(255, 255, 255, 0.07);
+  --text-bright:  #f0e8ff;
+  --text-muted:   #a89bc2;
+}
+
 * {
   box-sizing: border-box;
 }
 
+/* ── Body: deep void + dual neon light leaks ── */
 body {
   margin: 0;
   font-family: 'Quicksand', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: radial-gradient(#186a5e, #053339);
-  color: #e1eeeb;
+  color: var(--text-bright);
   min-height: 100vh;
+
+  background-color: #04010f;
+  background-image:
+    /* Scanline texture */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.18) 2px,
+      rgba(0, 0, 0, 0.18) 4px
+    ),
+    /* Magenta light leak — top left */
+    radial-gradient(ellipse 60% 50% at 5% 0%,   rgba(255, 0, 200, 0.22) 0%, transparent 70%),
+    /* Purple bloom — bottom right */
+    radial-gradient(ellipse 55% 45% at 95% 100%, rgba(100, 0, 255, 0.28) 0%, transparent 65%),
+    /* Cyan accent — top right */
+    radial-gradient(ellipse 40% 35% at 90% 5%,   rgba(0, 238, 255, 0.14) 0%, transparent 60%),
+    /* Green flicker — bottom left */
+    radial-gradient(ellipse 30% 30% at 8% 95%,   rgba(0, 255, 136, 0.10) 0%, transparent 55%),
+    /* Base dark void */
+    radial-gradient(ellipse 100% 100% at 50% 50%, #0d0620, #04010f);
 }
 
+/* ── Main content card ── */
 #content {
   max-width: 60rem;
   margin: 2rem auto;
   padding: 2rem;
-  background: radial-gradient(#0b201d, #021619);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+
+  background: rgba(8, 4, 22, 0.60);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 0, 204, 0.25);
+  border-left: 1px solid rgba(123, 47, 255, 0.20);
+
+  border-radius: 20px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.75),
+    0 1px 0 var(--glass-shine) inset,
+    0 0 60px rgba(123, 47, 255, 0.08),
+    0 0 120px rgba(255, 0, 204, 0.05);
 }
 
+/* ── Headings ── */
 h1 {
   font-family: 'Handjet', monospace;
   text-align: center;
   text-transform: uppercase;
-  color: #c1e2dd;
-  text-shadow: 0 0 4px rgba(35, 34, 34, 0.4);
+  color: var(--text-bright);
   font-size: 3.5rem;
   margin: 0;
+  text-shadow:
+    0 0 12px rgba(0, 238, 255, 0.6),
+    0 0 30px rgba(0, 238, 255, 0.3),
+    0 0 60px rgba(0, 238, 255, 0.1);
 }
 
 h1 em {
   font-style: normal;
-  color: #00eeff;
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 10px var(--neon-cyan),
+    0 0 30px rgba(0, 238, 255, 0.6),
+    0 0 60px rgba(0, 238, 255, 0.3);
 }
 
 header p {
   font-size: 1.2rem;
   margin: 0;
   text-align: center;
-  color: #c6f4f2;
+  color: var(--text-muted);
 }
 
+/* ── Player section ── */
 #player {
   text-align: center;
 }
 
 #player h2 {
-  color: #54a399;
+  color: var(--neon-magenta);
+  text-shadow: 0 0 10px rgba(255, 0, 204, 0.4);
 }
 
 #player p {
@@ -61,30 +118,44 @@ header p {
 
 #player input {
   font: inherit;
-  border: 1px solid #54a399;
-  background-color: #192f2b;
+  border: 1px solid rgba(123, 47, 255, 0.5);
+  background: rgba(20, 8, 48, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 4px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  padding: 0.25rem;
-  color: #d1f0ec;
+  padding: 0.25rem 0.5rem;
+  color: var(--text-bright);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#player input:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 238, 255, 0.15);
 }
 
 #player button {
   cursor: pointer;
-  background-color: #54a399;
-  border: 1px solid #54a399;
+  background: rgba(123, 47, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(123, 47, 255, 0.7);
   padding: 0.4rem 1rem;
-  color: #061e1a;
+  color: #f0e8ff;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 #player button:hover {
-  background-color: #3c8379;
-  border-color: #3c8379;
+  background: rgba(123, 47, 255, 0.75);
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 16px rgba(255, 0, 204, 0.35);
 }
 
+/* ── Challenges grid ── */
 #challenges {
   max-width: 50rem;
   margin: 3rem auto;
@@ -93,6 +164,7 @@ header p {
   gap: 2rem;
 }
 
+/* ── Challenge card ── */
 .challenge {
   width: 22rem;
   display: flex;
@@ -101,52 +173,105 @@ header p {
   justify-content: center;
   padding: 2rem;
   margin: 2rem auto;
-  background: linear-gradient(#4df8df, #4df0f8);
-  color: #221c18;
-  box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
-  border-radius: 6px;
+
+  background: rgba(50, 10, 100, 0.25);
+  backdrop-filter: blur(18px) saturate(200%);
+  -webkit-backdrop-filter: blur(18px) saturate(200%);
+
+  border: 1px solid rgba(123, 47, 255, 0.4);
+  border-top: 1px solid rgba(255, 0, 204, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 30px rgba(123, 47, 255, 0.12);
+
+  border-radius: 12px;
+  color: var(--text-bright);
+  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+}
+
+.challenge:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 0, 204, 0.55);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.65),
+    0 1px 0 rgba(255, 255, 255, 0.09) inset,
+    0 0 50px rgba(255, 0, 204, 0.20),
+    0 0 80px rgba(123, 47, 255, 0.12);
 }
 
 .challenge button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background: #12352f;
-  color: #edfcfa;
+  border: 1px solid rgba(0, 238, 255, 0.4);
+  border-radius: 6px;
+
+  background: rgba(0, 10, 40, 0.70);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  color: var(--neon-cyan);
   font-size: 1.2rem;
   cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
 }
 
 .challenge button:hover {
-  background: #051715;
+  background: rgba(0, 238, 255, 0.10);
+  border-color: var(--neon-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.3);
 }
 
 .challenge h2 {
   font-size: 1.5rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   margin: 0;
   text-align: center;
   text-transform: uppercase;
-  color: #221c18;
+  color: #d4b8ff;
+  text-shadow:
+    0 0 8px rgba(200, 130, 255, 0.5),
+    0 0 20px rgba(123, 47, 255, 0.3);
 }
 
 .challenge-time {
-  border: 1px solid #46cebe;
+  border: 1px solid rgba(0, 238, 255, 0.35);
+  background: rgba(0, 238, 255, 0.06);
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
   margin: 0.5rem;
+  color: var(--neon-cyan);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
 }
 
 .challenge .active {
   animation: flash 1s infinite;
 }
 
+/* ── Result modal ── */
 .result-modal {
-  border: none;
-  border-radius: 8px;
+  border: 1px solid rgba(123, 47, 255, 0.45);
+  border-top: 1px solid rgba(255, 0, 204, 0.35);
+  border-radius: 16px;
   padding: 2rem;
-  background-color: #d7fcf8;
+
+  background: rgba(12, 5, 30, 0.72);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+
+  color: var(--text-bright);
+
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.10) inset,
+    0 0 60px rgba(123, 47, 255, 0.15);
 }
 
 .result-modal[open] {
@@ -154,7 +279,9 @@ header p {
 }
 
 .result-modal::backdrop {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .result-modal h2 {
@@ -162,22 +289,29 @@ header p {
   margin: 0 0 0.25rem 0;
   font-size: 3rem;
   text-transform: uppercase;
+  color: var(--neon-magenta);
+  text-shadow:
+    0 0 12px rgba(255, 0, 204, 0.6),
+    0 0 30px rgba(255, 0, 204, 0.3);
 }
 
 .result-modal progress {
   width: 100%;
   height: 1.5rem;
   margin: 0;
-  accent-color: #46cebe;
+  accent-color: var(--neon-purple);
+  border-radius: 8px;
 }
 
 .result-modal p {
   margin: 0.5rem 0;
   font-size: 1.2rem;
+  color: var(--text-muted);
 }
 
 .result-modal p strong {
-  color: #10655b;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 238, 255, 0.4);
 }
 
 .result-modal form {
@@ -187,18 +321,26 @@ header p {
 .result-modal button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background: #12352f;
-  color: #edfcfa;
+  border: 1px solid rgba(123, 47, 255, 0.5);
+  border-radius: 6px;
+
+  background: rgba(50, 10, 100, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  color: #f0e8ff;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .result-modal button:hover {
-  background: #051715;
+  background: rgba(123, 47, 255, 0.45);
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 20px rgba(255, 0, 204, 0.3);
 }
 
+/* ── Keyframes ── */
 @keyframes slide-in-from-top {
   0% {
     transform: translateY(-15%);
@@ -211,13 +353,7 @@ header p {
 }
 
 @keyframes flash {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
+  0%   { opacity: 0.4; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.4; }
 }
