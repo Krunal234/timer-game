@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Player() {
-  const [playerName, setPlayerName] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const userInputHandler = (username) => {
-    setSubmitted(false);
-    setPlayerName(username);
-  }
+  const playerNameRef = useRef();
+  const [playerName, setPlayerName] = useState(null);
+
   const HandleSubmit = () => {
-    setSubmitted(true);
+    setPlayerName(playerNameRef.current.value);
   }
   return (
     <section id="player">
-      <h2>Welcome {submitted ? playerName : "Guest"}</h2>
+      <h2>Welcome {playerName ?? "Guest"}</h2>
       <p>
-        <input type="text" onChange={(e) => userInputHandler(e.target.value)} value={playerName} />
+        <input ref={playerNameRef} type="text" />
         <button onClick={HandleSubmit}>Set Name</button>
       </p>
     </section>
